@@ -18,16 +18,22 @@ env-cleanup:
 		echo "Очистка окружения отменена"; \
 	fi
 
+env-port-forward:
+	@docker-compose up -d port-forwarder
+
+env-port-close:
+	@docker-compose down port-forwarder
+
 migrate-create:
 	@if [ -z "$(seq)" ]; then \
-  echo "Отсутствует необходимый параметр seq." \
-  exit 1; \
-  fi; \
+  		echo "Отсутствует необходимый параметр seq." \
+  		exit 1; \
+  	fi; \
 	docker compose run --rm todoapp-postgres-migrate \
-    create \
-	-ext sql \
-    -dir /migrations \
-	-seq "$(seq)"
+    	create \
+		-ext sql \
+    	-dir /migrations \
+		-seq "$(seq)"
 
 migrate-up:
 	make migrate-action action=up
